@@ -1,16 +1,17 @@
 from django.contrib import admin
 
-from .models import Details,Myalert,Worksubmit
+from .models import adminassigment,userassigment
 
-@admin.register(Details)
-class DetailsAdmin(admin.ModelAdmin):
-    list_display = ['Name']
 
-@admin.register(Myalert)
-class MyalertAdmin(admin.ModelAdmin):
-    list_display = ['Description']
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-@admin.register(Worksubmit)
-class WorksubmitAdmin(admin.ModelAdmin):
-    list_display = ['Name']
+
+@admin.register(adminassigment)
+class adminassigmentAdmin(admin.ModelAdmin):
+    list_display = ['assigned_group']
+
+@admin.register(userassigment)
+class userassigmentAdmin(admin.ModelAdmin):
+    list_display = ['user']
+
 

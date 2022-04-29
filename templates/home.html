@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="">Home</a></li>
+            {% if user.is_not_superuser%}
+            <li><a href="{% url 'groupwork'%}">Group Projects </a></li>
+            {% endif%}
+            {% if user.is_superuser%}
+            <li><a href="{% url 'allgroupwork' %}">All Group Projects</a></li>
+            {%endif %}
+            {% if user.is_authenticated%}
+            <li><a href="{% url 'userwork'%}">My Projects</a></li>
+            {% endif %}
+            {% if user.is_authenticated %}
+            {% if user.is_superuser %}
+            <li><a href="{% url 'adminorder' %}">Group Assigment</a></li>
+            {% endif %}
+            
+            <li><a href="{% url 'userorder' %}">User Assigment</a></li>
+            {% endif %}
+           
+            
+        </ul>
+    </nav>
+</body>
+</html>

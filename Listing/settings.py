@@ -31,9 +31,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 SHARED_APPS = [
+    
     'django_tenants',
-    'CustomerPosts',
-    'Employee',
+    
+    
     
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,10 +42,17 @@ SHARED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'CustomerPosts',
+    'Employee',
+    'Account'
+    
 ]
 
 TENANT_APPS = [
-    'CustomerDetails',
+    
+    
     
     'django.contrib.admin',
     'django.contrib.auth',
@@ -52,6 +60,8 @@ TENANT_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'CustomerDetails',
+    
 ]
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
 TENANT_MODEL = "Employee.Client" # app.Model
@@ -68,6 +78,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
 
 ROOT_URLCONF = 'Listing.urls'
 
@@ -99,7 +114,7 @@ WSGI_APPLICATION = 'Listing.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
-        'NAME': 'Saas', 
+        'NAME': 'Project', 
         'USER': 'postgres', 
         'PASSWORD': '1234',
         'HOST': 'localhost', 
@@ -145,6 +160,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS=[os.path.join(BASE_DIR,'static')]
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -153,3 +171,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 SHOW_PUBLIC_IF_NO_TENANT_FOUND=True
+
