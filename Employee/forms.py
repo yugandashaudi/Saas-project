@@ -15,11 +15,18 @@ class userassign(forms.ModelForm):
     def __init__(self,request, *args,**kwargs,):
         query_set = Group.objects.filter(user=request.user)    
         print(query_set)
-        for query in query_set:
-       
-        
+        if query_set.exists():
+            for query in query_set:
+                print('hello')
+            
+            
+                super (userassign,self ).__init__(*args,**kwargs)
+                self.fields['user'].queryset = User.objects.filter(groups__name=query.name) 
+
+        if not query_set:
             super (userassign,self ).__init__(*args,**kwargs)
-            self.fields['user'].queryset = User.objects.filter(groups__name=query.name)    
+            self.fields['user'].queryset = User.objects.filter(username=request.user)
+            pass      
 
 class adminassign(forms.ModelForm):
     class Meta:

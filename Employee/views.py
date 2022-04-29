@@ -24,10 +24,12 @@ def adminorder(request):
         return HttpResponse('you are not authorized person ')        
 
 def userorder(request):
+    form = userassign(request=request)
+    
     if request.user.is_authenticated:
     
     
-        form = userassign(request=request)
+       
         if request.method == "POST":
             form = userassign(request,request.POST,request.FILES)
             if form.is_valid():
