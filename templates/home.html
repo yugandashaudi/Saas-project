@@ -15,9 +15,11 @@
             {% endif%}
             {% if user.is_superuser%}
             <li><a href="{% url 'allgroupwork' %}">All Group Projects</a></li>
+            <li><a href="{% url 'alluserwork' %}">All User Projects</a></li>
             {%endif %}
             {% if user.is_authenticated%}
             <li><a href="{% url 'userwork'%}">My Projects</a></li>
+            <li><a href="{% url 'my_group_works' %}">My group Projects</a></li>
             {% endif %}
             {% if user.is_authenticated %}
             {% if user.is_superuser %}

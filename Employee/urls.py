@@ -9,5 +9,9 @@ urlpatterns =[
     path('userorder/',views.userorder,name='userorder'),
     path('groupwork/',views.groupwork,name='groupwork'),
     path('userwork/',views.userwork,name='userwork'),
-    path('allgroupwwork/',views.allgroupwork,name='allgroupwork')
+    path('allgroupwwork/',views.allgroupwork,name='allgroupwork'),
+    path('alluserwwork/',views.alluserwork,name='alluserwork'),
+    path('update_userwork/<int:id>/',views.update_userwork,name='update_userwork'),
+    path('my_group_works/',views.my_group_works,name='my_group_works')
+    
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)

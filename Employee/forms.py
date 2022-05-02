@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 class userassign(forms.ModelForm):
     class Meta:
         model = userassigment 
-        exclude=['Metting_scheldule']
+        exclude=['Metting_scheldule','Completed']
 
     
     def __init__(self,request, *args,**kwargs,):
@@ -33,4 +33,7 @@ class adminassign(forms.ModelForm):
         model = adminassigment
         fields ='__all__'
 
-
+class update_user(forms.ModelForm):
+    class Meta:
+        model = userassigment
+        exclude=['Metting_schecudle']

@@ -7,13 +7,10 @@
     <title>Document</title>
 </head>
 <body>
-    {% for us in user %}
-    {{us.user}}
-    {{us.Work_Description}}
-    {{us.Metting_description}}
-    {{us.id}}
-    <button><a href="{% url 'update_userwork' id=us.id %}">Update The Task</a></button>
-
+    {% for wor in work %}
+    {{wor.user}}
+    {{wor.Metting_description}}
+    {{wor.Completed}}
     {% endfor %}
 </body>
 </html>

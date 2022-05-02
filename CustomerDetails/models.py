@@ -13,6 +13,7 @@ class adminassigment(models.Model):
     Image = models.ImageField(upload_to='images',null=True,blank=True)
     Metting_description = models.TextField()
     Metting_scheldule = models.DateTimeField(null=True,blank=True)
+    Completed = models.BooleanField(default=False)
     
     
    
@@ -25,6 +26,7 @@ class adminassigment(models.Model):
 
 class userassigment(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
+
    
     Work_Description = models.TextField()
     Metting_description = models.TextField()
@@ -32,6 +34,7 @@ class userassigment(models.Model):
     Image = models.ImageField(upload_to='images',null=True,blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
+    Completed = models.BooleanField(default=False)
 
     def __str__(self):
         return self.str(user)

@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import permission_required
 
 from CustomerDetails.models import adminassigment,userassigment
-from .forms import userassign,adminassign
+from .forms import userassign,adminassign,update_user
 import datetime 
 from django.contrib.auth.models import Group
 
@@ -59,7 +59,36 @@ def groupwork(request):
 def userwork(request):
     user_assigment = userassigment.objects.filter(user=request.user)
     context={'user':user_assigment}
+    
+
     return render(request,'user.html',context)
 
 def allgroupwork(request):
+
     pass
+
+def alluserwork(request):
+    all_user_work = userassigment.objects.all()
+    context={'work':all_user_work}
+    return render(request,'all_work.html',context)
+
+def update_userwork(request,id):
+    update_userwork = userassigment.objects.get(id=id)
+    form = update_user(instance = update_userwork)
+    if request.method == "POST":
+        form = update_user(request.POST,instance=update_userwork)
+        if form.is_valid():
+            form.save()
+            return HttpResponse('the work has been updated sucessfully')
+    context={'form':form}  
+    return render(request,'update_work.html',context) 
+    
+def my_group_works(request):
+    for group in request.user.groups.all():
+       
+        works = adminassigment.objects.filter(user = group)
+    
+        context={'work':works}
+        return render(request,'my_group.html',context)
+    else:
+        return HttpResponse('You are not in Group')    
