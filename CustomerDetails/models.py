@@ -7,13 +7,13 @@ from django.conf import settings
 
 
        
-class adminassigment(models.Model):
+class Adminassigment(models.Model):
     assigned_group = models.ForeignKey(Group,on_delete=models.CASCADE)
-    Work_Description = models.TextField()
-    Image = models.ImageField(upload_to='images',null=True,blank=True)
-    Metting_description = models.TextField()
-    Metting_scheldule = models.DateTimeField(null=True,blank=True)
-    Completed = models.BooleanField(default=False)
+    work_Description = models.TextField()
+    image = models.ImageField(upload_to='images',null=True,blank=True)
+    metting_description = models.TextField()
+    metting_scheldule = models.DateTimeField(null=True,blank=True)
+    completed = models.BooleanField(default=False)
     
     
    
@@ -22,22 +22,22 @@ class adminassigment(models.Model):
 
 
     def __str__(self):
-        return self.str(assigned_group)
+        return str(self.assigned_group)
 
-class userassigment(models.Model):
+class Userassigment(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
 
    
-    Work_Description = models.TextField()
-    Metting_description = models.TextField()
-    Metting_scheldule = models.DateField(null=True,blank=True)
-    Image = models.ImageField(upload_to='images',null=True,blank=True)
+    work_Description = models.TextField()
+    metting_description = models.TextField()
+    metting_scheldule = models.DateField(null=True,blank=True)
+    image = models.ImageField(upload_to='images',null=True,blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
-    Completed = models.BooleanField(default=False)
-
+    completed = models.BooleanField(default=False)
+    created_by = models.ForeignKey(User,on_delete=models.CASCADE,null=True,related_name="creator")
     def __str__(self):
-        return self.str(user)
+        return str(self.user)
 
 
 

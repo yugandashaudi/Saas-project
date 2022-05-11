@@ -25,6 +25,6 @@ urlpatterns = [
     path('api/token/refresh/',
          jwt_views.TokenRefreshView.as_view(),
          name ='token_refresh'),
-    path('',include('Employee.urls')),
+    
     path('api/',include('Account.urls'))
 ]
