@@ -44,7 +44,7 @@ class ViewAllUserinsideGroup(APIView):
         print(group_name_insert)
         group_exit=Group.objects.filter(name=group_name_insert).first()
         all_user = User.objects.filter(groups=group_exit)
-        serializer = SpecificUser(all_user,many=True)
+        serializer = SpecificUserserializers(all_user,many=True)
         return Response(serializer.data)
 
 
