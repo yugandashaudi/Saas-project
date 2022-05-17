@@ -28,17 +28,19 @@ class CreateGroupForUserserializer(serializers.Serializer):
         print(group_created)
         return group_created
 
-class SpecificUserserializers(serializers.ModelSerializer):
+class SpecificUserserializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
         fields =['id','username']
+
+
 class Allusertaskserializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
     class Meta:
         model = Userassigment
         fields=['id','user','work_Description','metting_description','metting_scheldule','completed']
-class Myuserserializers(serializers.ModelSerializer):
+class Myuserserializer(serializers.ModelSerializer):
     password2=serializers.CharField(style={'input_type':'password'},write_only=True)
   
     class Meta:
@@ -67,12 +69,14 @@ class Myuserserializers(serializers.ModelSerializer):
 
 
         return user
-class Userloginserializers(serializers.ModelSerializer):
+class Userloginserializer(serializers.ModelSerializer):
     username = serializers.CharField()
     class Meta:
         model = User
         fields=['username','password']
-class ChangeUserSerializers(serializers.Serializer):
+
+
+class ChangeUserSerializer(serializers.Serializer):
     password = serializers.CharField(max_length=100,style={'input_type':'password'},write_only=True)
     password2 =serializers.CharField(max_length=100,style={'input_type':'password'},write_only=True)
     class Meta:
@@ -90,9 +94,6 @@ class ChangeUserSerializers(serializers.Serializer):
         return attrs
 
 
-
-
-
 class Adminuserserializer(serializers.ModelSerializer):
     created_by = serializers.StringRelatedField()
     class Meta:
@@ -108,9 +109,8 @@ class Adminuserserializer(serializers.ModelSerializer):
         instance.completed = validate_data.get('completed',instance.completed)
         instance.image = validate_data.get('image',instance.image)
         instance.save()
-        return instance 
+        return instance
 
-   
 
 class Addadminuserserializers(serializers.ModelSerializer):
     
@@ -118,17 +118,20 @@ class Addadminuserserializers(serializers.ModelSerializer):
         model =Userassigment
         fields =['user','work_Description','metting_description','metting_scheldule','completed','created_by','image']
 
-    
-
-    
-
-
     def create(self,validate):
         
         try:
            
             Name = User.objects.get(username=validate['user'])  
-            admin_user = Userassigment.objects.create(user=Name,work_Description=validate['work_Description'],metting_description=validate['metting_description'],metting_scheldule=validate['metting_scheldule'],completed=validate['completed'],created_by=self.context.get('request').user,image=validate['image'])
+            admin_user = Userassigment.objects.create(
+                user=Name,
+                work_Description=validate['work_Description'],
+                metting_description=validate['metting_description'],
+                metting_scheldule=validate['metting_scheldule'],
+                completed=validate['completed'],
+                created_by=self.context.get('request').user,
+                image=validate['image']
+            )
 
         except User.DoesNotExist:
             raise serializers.ValidationError('The user does not exit ')

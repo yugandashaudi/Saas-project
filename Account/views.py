@@ -1,8 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework import status
-from .serializers import Myuserserializers, Userloginserializers, ChangeUserSerializers,GetallUserserilaizers,CreateGroupForUserserializer, Addadminuserserializers, Addemployeeuserserializers, Employeeuserserializers, Allusertaskserializer, Addadningroupserializers, Adminuserserializer, SpecificUserserializers
 from rest_framework.response import Response
-from django.shortcuts import render
 from django.contrib.auth import authenticate
 from .renenders import UserRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -10,31 +8,33 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from CustomerDetails.models import Adminassigment, Userassigment
 from django.contrib.auth.models import Group, User
 
-from django.db import connection
-from django.http import JsonResponse
+from .serializers import *
 
-
-
-"""this is code to get the token for the requested user """
 
 def get_tokens_for_user(user):
+    """this is code to get the token for the requested user """
     refresh = RefreshToken.for_user(user)
 
     return {
         'refresh': str(refresh),
         'access': str(refresh.access_token),
     }
-    """this is the code to assign the task to the group by admin himself"""
+
+
 class AddGroupAdminUser(APIView):
+    """this is the code to assign the task to the group by admin himself"""
     permission_classes = [IsAdminUser]
+
     def post(self,request,format=None):
        
         serializers = CreateGroupForUserserializer(data=request.data)
         serializers.is_valid(raise_exception=True)
         serializers.save()
         return Response('the user was added to the given group')
-"""this is code to get all the information about the user a group done by admin himself"""
+
+
 class ViewAllUserinsideGroup(APIView):
+    """this is code to get all the information about the user a group done by admin himself"""
     permission_classes = [IsAdminUser]
     def post(self,request,format=None):
         serializers = GetallUserserilaizers(data=request.data)
@@ -44,16 +44,16 @@ class ViewAllUserinsideGroup(APIView):
         print(group_name_insert)
         group_exit=Group.objects.filter(name=group_name_insert).first()
         all_user = User.objects.filter(groups=group_exit)
-        serializer = SpecificUserserializers(all_user,many=True)
+        serializer = SpecificUserserializer(all_user,many=True)
         return Response(serializer.data)
 
 
-"""this is the code to register new user"""
-class userregistrationView(APIView):
+class UserregistrationView(APIView):
+    """this is the code to register new user"""
     renender_classes = [UserRenderer]
 
     def post(self, request, format=None):
-        serializers = Myuserserializers(data=request.data)
+        serializers = Myuserserializer(data=request.data)
 
         if serializers.is_valid(raise_exception=True):
             user = serializers.save()
@@ -62,11 +62,12 @@ class userregistrationView(APIView):
 
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
-"""this is the code to login the resgistered user """
-class UserLoginView(APIView):
 
+
+class UserLoginView(APIView):
+    """this is the code to login the resgistered user """
     def post(self, request, format=None):
-        serializers = Userloginserializers(data=request.data)
+        serializers = Userloginserializer(data=request.data)
         if serializers.is_valid(raise_exception=True):
             username = serializers.data.get('username')
             password = serializers.data.get('password')
@@ -77,21 +78,24 @@ class UserLoginView(APIView):
 
             else:
                 return Response({'errors': {'non_field_errors': 'the username or password is incorrect'}}, status=status.HTTP_404_NOT_FOUND)
-"""this is code to change the password of registered user """
+
 
 class UserChangePasswordView(APIView):
+    """this is code to change the password of registered user """
     permission_classes = [IsAuthenticated]
 
     def post(self, request, format=None):
         print(request.user)
-        serializers = ChangeUserSerializers(
+        serializers = ChangeUserSerializer(
             data=request.data, context={'user': request.user})
         if serializers.is_valid(raise_exception=True):
             return Response({'msg': 'the password is changed sucessfully'}, status=status.HTTP_200_OK)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
-"""this is code to get and post the user task by admin"""
+
+
 class AddallAdminuser(APIView):
+    """this is code to get and post the user task by admin"""
     permission_classes = [IsAdminUser]
 
     def get(self, request, format=None):
@@ -109,8 +113,8 @@ class AddallAdminuser(APIView):
 
         
 
-"""this is code to get the particular use,update the user task by admin,delete the user task by admin"""
 class AddAdminUser(APIView):
+    """this is code to get the particular use,update the user task by admin,delete the user task by admin"""
     permission_classes = [IsAdminUser]
 
     def get(self, request, id, format=None):
@@ -208,7 +212,7 @@ class GetEmployeeuser(APIView):
             instance = Userassigment.objects.get(
                 id=id, created_by=request.user).delete()
             return Response('the user has been sucessfully deleted')
-        except userassigment.DoesNotExist:
+        except Userassigment.DoesNotExist:
             return Response('The user is not available to delete')
 
 """this is the code to to get all the user inside group user """ 
@@ -219,6 +223,6 @@ class RequestGroupUser(APIView):
         current_user = self.request.user
         current_group = Group.objects.get(user=current_user)
         user_inside_group = User.objects.filter(groups=current_group)
-        serializers = SpecificUser(user_inside_group, many=True)
+        serializers = SpecificUserserializer(user_inside_group, many=True)
         return Response(serializers.data)
 """the is the code to get the schema of request.user """

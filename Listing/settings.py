@@ -31,13 +31,6 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 SHARED_APPS = [
-    
-    'django_tenants',
-    'Employee',
-    
-    
-    
-    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,16 +40,12 @@ SHARED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'CustomerPosts',
-    
-    
-    'Account'
-    
+    'django_tenants',
+    'Employee',
+    'Account',
 ]
 
 TENANT_APPS = [
-    
-    
-    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -66,10 +55,9 @@ TENANT_APPS = [
     'CustomerDetails',
     'rest_framework',
     'rest_framework_simplejwt',
-    
-    
 ]
-INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
+
+INSTALLED_APPS = list(set(SHARED_APPS + TENANT_APPS))
 TENANT_MODEL = "Employee.Client" # app.Model
 
 TENANT_DOMAIN_MODEL = "Employee.Domain"  # app.Model
@@ -120,9 +108,9 @@ WSGI_APPLICATION = 'Listing.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
-        'NAME': 'Project', 
+        'NAME': 'saas', 
         'USER': 'postgres', 
-        'PASSWORD': '1234',
+        'PASSWORD': 'postgres',
         'HOST': 'localhost', 
         'PORT': '5432',
     }
@@ -165,8 +153,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS=[os.path.join(BASE_DIR,'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
+# STATICFILES_DIRS=[os.path.join(BASE_DIR,'static')]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 

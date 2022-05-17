@@ -1,17 +1,19 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django_tenants.admin import TenantAdminMixin
 
 from .models import Adminassigment,Userassigment
 
 
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-
-@admin.register(Adminassigment)
-class AdminassigmentAdmin(admin.ModelAdmin):
+class AdminassigmentAdmin(TenantAdminMixin, admin.ModelAdmin):
     list_display = ['assigned_group']
 
-@admin.register(Userassigment)
-class UserassigmentAdmin(admin.ModelAdmin):
+class UserassigmentAdmin(TenantAdminMixin, admin.ModelAdmin):
     list_display = ['user']
+
+
+admin.site.register(Adminassigment, AdminassigmentAdmin)
+admin.site.register(Userassigment, UserassigmentAdmin)
 
 
